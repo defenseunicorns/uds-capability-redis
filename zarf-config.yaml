@@ -1,0 +1,5 @@
+package:
+  deploy:
+    set:
+      # namespace to allow traffic from
+      netpol_allow_ns: "redis"

@@ -1,0 +1,4 @@
+namespaces:
+  - name: redis
+    # labels:
+    #   istio-injection: enabled
