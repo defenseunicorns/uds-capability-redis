@@ -32,19 +32,19 @@ components:
         namespace: default
         url: https://defenseunicorns.github.io/uds-support-charts/
         valuesFiles:
-          - files/namespaces/values.yaml
+          - manifests/namespaces/values.yaml
   - name: redis-kyverno-exceptions
     required: true
     manifests:
       - name: kyverno-exceptions
         files:
-          - files/policy-exceptions/registry.yaml
+          - manifests/policy-exceptions/registry.yaml
   - name: istiod-netpol
     required: true
     manifests:
       - name: netpol
         files:
-          - files/networkpolicy.yaml
+          - manifests/networkpolicy.yaml
   - name: redis
     required: true
     description: "Deploy redis via flux"
