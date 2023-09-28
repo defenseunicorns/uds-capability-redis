@@ -1,0 +1,4 @@
+namespaces:
+  - name: ###ZARF_VAR_APP###-redis
+    labels:
+      istio-injection: enabled

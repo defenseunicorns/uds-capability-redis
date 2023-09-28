@@ -1,0 +1,20 @@
+apiVersion: kyverno.io/v2alpha1
+kind: PolicyException
+metadata:
+  name: ###ZARF_VAR_APP###-redis-registry-exception
+  namespace: ###ZARF_VAR_APP###-redis
+spec:
+  exceptions:
+  - policyName: restrict-image-registries
+    ruleNames:
+    - validate-registries
+    - autogen-validate-registries
+  match:
+    any:
+    - resources:
+        kinds:
+        - StatefulSet
+        namespaces:
+        - ###ZARF_VAR_APP###-redis
+        names:
+        - ###ZARF_VAR_APP###-redis-node

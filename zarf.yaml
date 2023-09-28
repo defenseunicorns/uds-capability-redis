@@ -1,0 +1,65 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
+kind: ZarfPackageConfig
+metadata:
+  name: redis
+  description: "UDS redis capability deployed via flux"
+  version: "0.0.1"
+  architecture: amd64
+
+variables:
+  - name: REDIS_DEPENDS_ON
+    default: "[]"
+  - name: REDIS_CREATE_NAMESPACE
+    default: "false"
+  - name: DOMAIN
+    default: "bigbang.dev"
+  - name: AUTH_ENABLED
+    default: "true"
+  - name: APP
+    default: "app"
+
+components:
+  - name: istio-version
+    required: true
+    actions:
+      onDeploy:
+        before:
+          - cmd: kubectl get deployment -n monitoring monitoring-monitoring-kube-operator -o=jsonpath='{.spec.template.metadata.annotations.bigbang\.dev/istioVersion}'
+            setVariable: ISTIO_VERSION
+  - name: create-namespace
+    required: true
+    charts:
+      - name: namespaces
+        version: 1.0.0
+        namespace: default
+        url: https://defenseunicorns.github.io/uds-support-charts/
+        valuesFiles:
+          - manifests/namespaces/values.yaml
+  - name: redis-kyverno-exceptions
+    required: true
+    manifests:
+      - name: kyverno-exceptions
+        files:
+          - manifests/policy-exceptions/registry.yaml
+  - name: istiod-netpol
+    required: true
+    manifests:
+      - name: netpol
+        files:
+          - manifests/networkpolicy.yaml
+  - name: redis
+    required: true
+    description: "Deploy redis via flux"
+    charts:
+    # renovate: datasource=helm
+      - name: flux-app
+        url: https://defenseunicorns.github.io/uds-support-charts/
+        version: 1.0.7
+        namespace: default
+        valuesFiles:
+          - redis-flux-values.yaml
+    repos:
+      - https://repo1.dso.mil/big-bang/product/packages/redis.git
+    images:
+      - registry1.dso.mil/ironbank/bitnami/redis:7.2.1
+      - docker.io/bitnami/redis-sentinel:7.2.1-debian-11-r0

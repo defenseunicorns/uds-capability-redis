@@ -1,0 +1,5 @@
+package:
+  deploy:
+    set:
+      # The app that will use this redis instance
+      app: "app"

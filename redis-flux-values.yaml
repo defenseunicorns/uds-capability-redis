@@ -1,0 +1,35 @@
+application:
+  name: ###ZARF_VAR_APP###-redis
+  createNamespace: ###ZARF_VAR_REDIS_CREATE_NAMESPACE###
+  namespace: ###ZARF_VAR_APP###-redis
+  path: chart
+  repository: https://repo1.dso.mil/big-bang/product/packages/redis.git
+  ref:
+    # renovate: datasource=gitlab-tags depName=big-bang/product/packages/redis versioning=loose registryUrl=https://repo1.dso.mil
+    tag: 18.0.4-bb.0
+  dependsOn:
+    ###ZARF_VAR_REDIS_DEPENDS_ON###
+  baseValues:
+    hostname: ###ZARF_VAR_DOMAIN###
+    architecture: replication
+    istio:
+      enabled: true
+    auth:
+      enabled: ###ZARF_VAR_AUTH_ENABLED###
+    sentinel:
+      enabled: true
+      image:
+        pullPolicy: Always
+      resources:
+        limits:
+          cpu: 250m
+          memory: 256Mi
+        requests:
+          cpu: 250m
+          memory: 256Mi
+    networkPolicy:
+      enabled: true
+      ingressNSMatchLabels:
+        kubernetes.io/metadata.name: ###ZARF_VAR_APP###
+      ingressNSPodMatchLabels:
+        release:  ###ZARF_VAR_APP###
