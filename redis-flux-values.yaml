@@ -11,15 +11,13 @@ application:
     ###ZARF_VAR_REDIS_DEPENDS_ON###
   baseValues:
     hostname: ###ZARF_VAR_DOMAIN###
-    architecture: standalone
+    architecture: replication
     istio:
       enabled: true
-      redis:
-        enabled: false
     auth:
-      enabled: false
+      enabled: true
     sentinel:
-      enabled: false
+      enabled: true
       image:
         pullPolicy: Always
       resources:

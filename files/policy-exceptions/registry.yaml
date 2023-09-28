@@ -17,4 +17,4 @@ spec:
         namespaces:
         - ###ZARF_VAR_APP###-redis
         names:
-        - redis-master
+        - myapp-redis-node

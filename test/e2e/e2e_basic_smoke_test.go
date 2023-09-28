@@ -27,6 +27,12 @@ func TestAllServicesRunning(t *testing.T) { //nolint:funlen
 		output, err := platform.RunSSHCommandAsSudo(`kubectl get nodes`)
 		require.NoError(t, err, output)
 
-		// TODO create basic e2e tests
+		// Wait for the redis Statefulset to exist.
+		output, err = platform.RunSSHCommandAsSudo(`timeout 1200 bash -c "while ! kubectl get statefulset app-redis-node -n app-redis; do sleep 5; done"`)
+		require.NoError(t, err, output)
+
+		// Wait for the redis Statefulset to report that it is ready
+		output, err = platform.RunSSHCommandAsSudo(`kubectl rollout status statefulset/app-redis-node -n app-redis --watch --timeout=1200s`)
+		require.NoError(t, err, output)
 	})
 }
