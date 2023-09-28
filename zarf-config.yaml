@@ -1,5 +1,5 @@
 package:
   deploy:
     set:
-      # namespace to allow traffic from
-      netpol_allow_ns: "redis"
+      # The app that will use this redis instance
+      app: "app"

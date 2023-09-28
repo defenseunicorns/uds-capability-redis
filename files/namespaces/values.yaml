@@ -1,4 +1,7 @@
 namespaces:
-  - name: redis
-    # labels:
-    #   istio-injection: enabled
+  - name: ###ZARF_VAR_APP###
+    labels:
+      istio-injection: enabled
+  - name: ###ZARF_VAR_APP###-redis
+    labels:
+      istio-injection: enabled

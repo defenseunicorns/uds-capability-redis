@@ -13,8 +13,8 @@ variables:
     default: "false"
   - name: DOMAIN
     default: "bigbang.dev"
-  - name: NETPOL_ALLOW_NS
-    default: "redis"
+  - name: APP
+    default: "app"
 
 components:
   - name: istio-version
@@ -24,7 +24,7 @@ components:
         before:
           - cmd: kubectl get deployment -n monitoring monitoring-monitoring-kube-operator -o=jsonpath='{.spec.template.metadata.annotations.bigbang\.dev/istioVersion}'
             setVariable: ISTIO_VERSION
-  - name: create-redis-namespace
+  - name: create-namespace
     required: true
     charts:
       - name: namespaces
@@ -38,6 +38,7 @@ components:
     manifests:
       - name: kyverno-exceptions
         files:
+          - files/policy-exceptions/externalName.yaml
           - files/policy-exceptions/registry.yaml
   - name: redis
     required: true
@@ -47,22 +48,39 @@ components:
       - name: flux-app
         url: https://defenseunicorns.github.io/uds-support-charts/
         version: 1.0.7
-        namespace: redis
+        namespace: default
         valuesFiles:
           - redis-flux-values.yaml
     repos:
       - https://repo1.dso.mil/big-bang/product/packages/redis.git
     images:
       - registry1.dso.mil/ironbank/bitnami/redis:7.2.1
-      - docker.io/bitnami/redis-sentinel:7.2.1-debian-11-r0
-    actions:
-      onDeploy:
-        after:
-          - wait:
-              cluster:
-                kind: helmRelease
-                name: redis
-                condition: Ready
-                namespace: bigbang
-            maxTotalSeconds: 900
-            description: redis HelmRelease to be Ready
+      # - docker.io/bitnami/redis-sentinel:7.2.1-debian-11-r0
+    # actions:
+    #   onDeploy:
+    #     after:
+    #       - cmd: "./zarf tools wait-for helmrelease ###ZARF_VAR_APP###-redis -n bigbang"
+    #         maxTotalSeconds: 900
+    #         description: redis HelmRelease to be Ready
+  # - name: redis-cred
+  #   required: true
+  #   actions:
+  #     onDeploy:
+  #       before:
+  #         - cmd: "kubectl get secret -n ###ZARF_VAR_APP###-redis redis --template='{{ index .data "redis-password" }}' | base64 -d"
+  #           mute: true
+  #           setVariables:
+  #             - name: REDIS_PASSWORD
+  #               sensitive: true
+  # - name: redis-secret
+  #   required: true
+  #   manifests:
+  #     - name: redis cred secret
+  #       files:
+  #         - files/secret.yaml
+  # - name: redis-service
+  #   required: true
+  #   manifests:
+  #     - name: service for redis
+  #       files:
+  #         - files/service.yaml

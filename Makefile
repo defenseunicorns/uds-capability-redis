@@ -179,7 +179,7 @@ deploy/dubbd-k3d: | build/zarf ## Deploy the k3d flavor of DUBBD
 
 deploy/uds-capability-redis: ## Deploy the redis capability
 	cp zarf-config.yaml build/
-	cd build && ./zarf package deploy zarf-package-redis-amd64-*.tar.zst --confirm
+	cd build && ./zarf -l trace package deploy zarf-package-redis-amd64-*.tar.zst --confirm
 
 ########################################################################
 # Macro Section

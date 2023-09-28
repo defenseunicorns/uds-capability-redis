@@ -1,7 +1,7 @@
 application:
-  name: redis
+  name: ###ZARF_VAR_APP###-redis
   createNamespace: ###ZARF_VAR_REDIS_CREATE_NAMESPACE###
-  namespace: redis
+  namespace: ###ZARF_VAR_APP###-redis
   path: chart
   repository: https://repo1.dso.mil/big-bang/product/packages/redis.git
   ref:
@@ -11,14 +11,15 @@ application:
     ###ZARF_VAR_REDIS_DEPENDS_ON###
   baseValues:
     hostname: ###ZARF_VAR_DOMAIN###
+    architecture: standalone
     istio:
-      enabled: false
+      enabled: true
       redis:
         enabled: false
     auth:
       enabled: false
     sentinel:
-      enabled: true
+      enabled: false
       image:
         pullPolicy: Always
       resources:
@@ -31,6 +32,6 @@ application:
     networkPolicy:
       enabled: true
       ingressNSMatchLabels:
-        kubernetes.io/metadata.name: ###ZARF_VAR_NETPOL_ALLOW_NS###
+        kubernetes.io/metadata.name: ###ZARF_VAR_APP###
       ingressNSPodMatchLabels:
-        release:  ###ZARF_VAR_NETPOL_ALLOW_NS###
+        release:  ###ZARF_VAR_APP###
