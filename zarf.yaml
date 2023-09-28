@@ -13,6 +13,8 @@ variables:
     default: "false"
   - name: DOMAIN
     default: "bigbang.dev"
+  - name: AUTH_ENABLED
+    default: "true"
   - name: APP
     default: "app"
 

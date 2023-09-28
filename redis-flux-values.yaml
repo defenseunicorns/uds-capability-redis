@@ -15,7 +15,7 @@ application:
     istio:
       enabled: true
     auth:
-      enabled: true
+      enabled: ###ZARF_VAR_AUTH_ENABLED###
     sentinel:
       enabled: true
       image:

@@ -11,6 +11,7 @@ Bigbang [Redis](https://repo1.dso.mil/big-bang/product/packages/redis) deployed 
 
 - This capability uses the Zarf variable `APP` to create the namespace ${APP}-redis. `APP` defaults to `app`.
 - For example, if you want to create a redis instance for gitlab to use you can set the deploy time Zarf variable `APP` to gitlab. This will create the namespace `gitlab-redis` and will create those resources there.
+- Whatever is set for `APP` will also be used to configure network policies to allow ingress from the `APP` namespace
 - Look at the [zarf-config.yaml](zarf-config.yaml) in this project for an example of how to set this variable.
 
 ## Deploy
