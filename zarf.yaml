@@ -3,7 +3,7 @@ kind: ZarfPackageConfig
 metadata:
   name: redis
   description: "UDS redis capability deployed via flux"
-  version: "0.0.1"
+  version: "0.0.2"
   architecture: amd64
 
 variables:
@@ -59,7 +59,7 @@ components:
         valuesFiles:
           - redis-flux-values.yaml
     repos:
-      - https://repo1.dso.mil/big-bang/product/packages/redis.git
+      - https://repo1.dso.mil/big-bang/product/packages/redis.git@18.0.4-bb.0
     images:
       - registry1.dso.mil/ironbank/bitnami/redis:7.2.1
       - docker.io/bitnami/redis-sentinel:7.2.1-debian-11-r0
