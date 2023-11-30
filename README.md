@@ -55,5 +55,5 @@ zarf-packages:
   # Redis
   - name: redis
     repository: ghcr.io/defenseunicorns/uds-capability/redis
-    ref: 0.0.1
+    ref: x.x.x
 ```
