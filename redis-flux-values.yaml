@@ -6,7 +6,7 @@ application:
   repository: https://repo1.dso.mil/big-bang/product/packages/redis.git
   ref:
     # renovate: datasource=gitlab-tags depName=big-bang/product/packages/redis versioning=loose registryUrl=https://repo1.dso.mil
-    tag: 18.0.4-bb.0
+    tag: 18.9.1-bb.0
   dependsOn:
     ###ZARF_VAR_REDIS_DEPENDS_ON###
   baseValues:
